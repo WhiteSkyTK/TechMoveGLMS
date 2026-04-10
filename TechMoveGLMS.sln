@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechMoveGLMS", "TechMoveGLMS\TechMoveGLMS.csproj", "{3B428EB3-B669-4F20-91AF-E800EE091E9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{3012C274-CE33-4EAB-B3C8-2AA8564F56FA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3B428EB3-B669-4F20-91AF-E800EE091E9D} = {3B428EB3-B669-4F20-91AF-E800EE091E9D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
