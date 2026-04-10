@@ -1,4 +1,28 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
 
-// Write your JavaScript code.
+    // Mobile Sidebar Toggle
+    if (openBtn && closeBtn) {
+        openBtn.addEventListener('click', () => {
+            sidebar.classList.add('open');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+        });
+    }
+
+    // Dynamic Active Nav Linking
+    const currentLocation = location.pathname;
+    const navLinks = document.querySelectorAll('.nav-links li a');
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === currentLocation ||
+            (currentLocation.length > 1 && link.getAttribute('href').startsWith(currentLocation))) {
+            link.classList.add('active');
+        }
+    });
+});
