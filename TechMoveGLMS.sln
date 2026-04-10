@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36915.13 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechMoveGLMS", "TechMoveGLMS\TechMoveGLMS.csproj", "{3B428EB3-B669-4F20-91AF-E800EE091E9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{3012C274-CE33-4EAB-B3C8-2AA8564F56FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3B428EB3-B669-4F20-91AF-E800EE091E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B428EB3-B669-4F20-91AF-E800EE091E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B428EB3-B669-4F20-91AF-E800EE091E9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3012C274-CE33-4EAB-B3C8-2AA8564F56FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3012C274-CE33-4EAB-B3C8-2AA8564F56FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3012C274-CE33-4EAB-B3C8-2AA8564F56FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3012C274-CE33-4EAB-B3C8-2AA8564F56FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
