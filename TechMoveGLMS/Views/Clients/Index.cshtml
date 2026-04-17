@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TechMoveGLMS.Models.Client>
+@{
+    ViewData["Title"] = "Clients";
+}
+
+<div class="dashboard-header" style="margin-bottom: 20px;">
+    <h2>Client Directory</h2>
+    <a asp-action="Create" class="btn-primary">Add New Client</a>
+</div>
+
+<div class="glass-card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.ContactEmail)</th>
+                <th>@Html.DisplayNameFor(model => model.Region)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="font-weight: 600;">@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td><a href="mailto:@item.ContactEmail">@Html.DisplayFor(modelItem => item.ContactEmail)</a></td>
+                    <td><span style="background-color: #e5e7eb; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">@Html.DisplayFor(modelItem => item.Region)</span></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ClientId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ClientId">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

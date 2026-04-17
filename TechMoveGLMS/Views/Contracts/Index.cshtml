@@ -1,0 +1,78 @@
+﻿@model IEnumerable<TechMoveGLMS.Models.Contract>
+@{
+    ViewData["Title"] = "Contracts";
+}
+
+<div class="dashboard-header" style="margin-bottom: 20px;">
+    <h2>Manage Contracts</h2>
+    <a asp-action="Create" class="btn-primary">Issue New Contract</a>
+</div>
+
+<div class="glass-card" style="margin-bottom: 20px; background-color: #f9fafb;">
+    <form asp-action="Index" method="get" style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+        <div>
+            <label style="font-weight: bold; font-size: 0.85rem;">Start Date</label>
+            <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control" />
+        </div>
+        <div>
+            <label style="font-weight: bold; font-size: 0.85rem;">End Date</label>
+            <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control" />
+        </div>
+        <div>
+            <label style="font-weight: bold; font-size: 0.85rem;">Status</label>
+            <select name="searchStatus" class="form-control">
+                <option value="">-- All Statuses --</option>
+                <option value="0" selected="@(ViewBag.SearchStatus?.ToString() == "0")">Draft</option>
+                <option value="1" selected="@(ViewBag.SearchStatus?.ToString() == "1")">Active</option>
+                <option value="2" selected="@(ViewBag.SearchStatus?.ToString() == "2")">OnHold</option>
+                <option value="3" selected="@(ViewBag.SearchStatus?.ToString() == "3")">Expired</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Filter</button>
+            <a asp-action="Index" class="btn-secondary" style="padding: 10px;">Clear</a>
+        </div>
+    </form>
+</div>
+
+<div class="glass-card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Client)</th>
+                <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+                <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>@Html.DisplayNameFor(model => model.Level)</th>
+                <th>Agreement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Client.Name)</td>
+                    <td>@item.StartDate.ToShortDateString()</td>
+                    <td>@item.EndDate.ToShortDateString()</td>
+                    <td><span style="font-weight:bold; color: var(--primary-color);">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                    <td>@Html.DisplayFor(modelItem => item.Level)</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.SignedAgreementFilePath))
+                        {
+                            <a href="@item.SignedAgreementFilePath" target="_blank" style="color: #10b981;"><i class="fa-solid fa-file-pdf"></i> View</a>
+                        }
+                        else
+                        {
+                            <span style="color: #9ca3af;">No File</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ContractId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ContractId">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,4 +1,4 @@
-/* Core Variables */
+/* --- 1. Core Variables & Layout --- */
 :root {
     --primary-color: #2563eb;
     --secondary-color: #1e40af;
@@ -27,7 +27,7 @@ body {
     min-height: 100vh;
 }
 
-/* Sidebar Styling */
+/* --- 2. Sidebar & Header Styling --- */
 .sidebar {
     width: 260px;
     background-color: var(--sidebar-bg);
@@ -68,7 +68,6 @@ body {
             border-left: 4px solid white;
         }
 
-/* Main Content Styling */
 .main-content {
     flex: 1;
     display: flex;
@@ -106,32 +105,200 @@ body {
     padding: 2rem;
 }
 
-/* Modern Card Design for Data */
+/* --- 3. Glass Cards & Tables (For your Index pages) --- */
 .glass-card {
     background: var(--card-bg);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     border: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+    .table th, .table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .table th {
+        background-color: #f9fafb;
+        font-weight: bold;
+        color: #4b5563;
+    }
+
+    .table tr:hover {
+        background-color: #f3f4f6;
+    }
+
+/* --- 4. Form Controls & Buttons --- */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    margin-top: 5px;
     transition: var(--transition);
 }
 
-    .glass-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 
-/* Mobile Toggle */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .btn-primary:hover {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+/* --- Layout Helpers --- */
+.form-container {
+    max-width: 800px;
+}
+
+.form-container-small {
+    max-width: 600px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- Currency Calculator --- */
+.validation-summary {
+    color: red;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.currency-calculator-box {
+    background-color: #f3f4f6;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.currency-inputs {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.input-wrapper {
+    flex: 1;
+}
+
+    .input-wrapper label {
+        color: #4b5563;
+        font-weight: bold;
+    }
+
+.read-only-input {
+    background-color: #e5e7eb;
+    cursor: not-allowed;
+}
+
+.rate-label {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    margin-top: 10px;
+}
+
+/* --- 5. Pro UI Polish (Icons, File Uploads, Secondary Buttons) --- */
+
+/* Fix the ugly default "Choose File" browser button */
+input[type="file"].form-control {
+    padding: 5px; /* Adjust padding to fit the button */
+}
+
+input[type="file"]::file-selector-button {
+    background-color: var(--sidebar-bg);
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 15px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+    input[type="file"]::file-selector-button:hover {
+        background-color: var(--primary-color);
+    }
+
+/* Secondary Buttons (For "Back to List" and Canceling) */
+.btn-secondary {
+    background-color: #e5e7eb;
+    color: #374151;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Spaces out the icon and text */
+    transition: var(--transition);
+}
+
+    .btn-secondary:hover {
+        background-color: #d1d5db;
+        color: #111827;
+    }
+
+/* Hamburger Menu / Mobile Toggle Polish */
 .mobile-toggle {
-    display: none;
-    background: none;
+    display: none; /* Hidden on desktop by default */
+    background: transparent;
     border: none;
     color: var(--text-main);
     font-size: 1.5rem;
     cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+    .mobile-toggle:hover {
+        background-color: #f3f4f6;
+    }
+
+/* Make sure FontAwesome icons in buttons and tables have breathing room */
+.btn-primary i, .btn-secondary i, td a i {
+    margin-right: 5px;
 }
 
 @media (max-width: 768px) {
+    .mobile-toggle {
+        display: block;
+    }
+    /* Show burger on mobile */
     .sidebar {
         position: fixed;
         left: -260px;
@@ -141,13 +308,16 @@ body {
 
         .sidebar.open {
             left: 0;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
         }
-
-    .mobile-toggle {
-        display: block;
-    }
 
     #close-sidebar {
         color: white;
+        display: block;
+        margin-left: auto;
     }
+
+        #close-sidebar:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
 }

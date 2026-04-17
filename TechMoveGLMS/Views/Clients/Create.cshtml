@@ -1,0 +1,54 @@
+﻿@model TechMoveGLMS.Models.Client
+@{
+    ViewData["Title"] = "Add Client";
+}
+
+<div class="dashboard-header" style="margin-bottom: 20px;">
+    <h2>Add New Client</h2>
+</div>
+
+<div class="glass-card form-container-small">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="Name" class="control-label">Company Name</label>
+            <input asp-for="Name" class="form-control" placeholder="e.g. Acme Logistics" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ContactEmail" class="control-label">Billing Email</label>
+            <input asp-for="ContactEmail" class="form-control" type="email" placeholder="billing@company.com" required />
+            <span asp-validation-for="ContactEmail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Region" class="control-label">Operating Region</label>
+            <select asp-for="Region" class="form-control" required>
+                <option value="">-- Select a Region --</option>
+                <option value="North America">North America</option>
+                <option value="Europe (EU)">Europe (EU)</option>
+                <option value="Asia Pacific">Asia Pacific</option>
+                <option value="Africa">Africa</option>
+            </select>
+            <span asp-validation-for="Region" class="text-danger"></span>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <input type="submit" value="Save Client" class="btn-primary" style="width: 100%;" />
+        </div>
+    </form>
+</div>
+
+<div style="margin-top: 20px;">
+    <a asp-action="Index" class="btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back to List
+    </a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

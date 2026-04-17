@@ -1,0 +1,67 @@
+﻿@model TechMoveGLMS.Models.Contract
+@{
+    ViewData["Title"] = "Create Contract";
+}
+
+<div class="dashboard-header" style="margin-bottom: 20px;">
+    <h2>Issue New Contract</h2>
+</div>
+
+<div class="glass-card form-container">
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="ClientId" class="control-label">Client</label>
+                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Level" class="control-label">Service Level</label>
+                <select asp-for="Level" class="form-control">
+                    <option value="0">Standard</option>
+                    <option value="1">Express</option>
+                    <option value="2">Hazardous</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label">Start Date</label>
+                <input asp-for="StartDate" class="form-control" type="date" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label">End Date</label>
+                <input asp-for="EndDate" class="form-control" type="date" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label">Initial Status</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="0">Draft</option>
+                    <option value="1">Active</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="upload-zone" id="drop-zone" style="margin-bottom: 20px;">
+            <i class="fa-solid fa-cloud-arrow-up icon-large"></i>
+            <p>Drag and drop the Signed Agreement (PDF only)</p>
+            <p class="text-muted">or click to browse</p>
+            <input type="file" id="fileInput" name="pdfFile" accept="application/pdf" class="hidden-input" required />
+            <div id="file-name-display" class="file-success-msg hidden"></div>
+        </div>
+        <span id="file-error" class="file-error-msg hidden">Error: Only .pdf files are allowed.</span>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <input type="submit" value="Create Contract" class="btn-primary" style="width: 100%;" />
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index" style="display:inline-block; margin-top:15px;">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

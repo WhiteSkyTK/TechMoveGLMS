@@ -10,20 +10,20 @@
 
     <div class="glass-card">
         <h3 style="color: var(--text-light); font-size: 0.9rem; text-transform: uppercase;">Active Contracts</h3>
-        <p style="font-size: 2.5rem; font-weight: bold; color: var(--primary-color);">1,204</p>
-        <p style="color: green; font-size: 0.8rem;"><i class="fa-solid fa-arrow-up"></i> 12% from last month</p>
+        <p style="font-size: 2.5rem; font-weight: bold; color: var(--primary-color);">@ViewBag.ActiveContracts</p>
+        <p style="color: green; font-size: 0.8rem;"><i class="fa-solid fa-file-contract"></i> Current active agreements</p>
     </div>
 
     <div class="glass-card">
         <h3 style="color: var(--text-light); font-size: 0.9rem; text-transform: uppercase;">Pending Requests</h3>
-        <p style="font-size: 2.5rem; font-weight: bold; color: #f59e0b;">43</p>
-        <p style="color: #6b7280; font-size: 0.8rem;">Awaiting manager approval</p>
+        <p style="font-size: 2.5rem; font-weight: bold; color: #f59e0b;">@ViewBag.PendingRequests</p>
+        <p style="color: #6b7280; font-size: 0.8rem;"><i class="fa-solid fa-clock"></i> Awaiting manager approval</p>
     </div>
 
     <div class="glass-card">
-        <h3 style="color: var(--text-light); font-size: 0.9rem; text-transform: uppercase;">System Status</h3>
-        <p style="font-size: 2.5rem; font-weight: bold; color: #10b981;">Online</p>
-        <p style="color: #6b7280; font-size: 0.8rem;">API Latency: 42ms</p>
+        <h3 style="color: var(--text-light); font-size: 0.9rem; text-transform: uppercase;">Pending Value (ZAR)</h3>
+        <p style="font-size: 2.5rem; font-weight: bold; color: #10b981;">R @ViewBag.TotalPendingValue.ToString("N2")</p>
+        <p style="color: #6b7280; font-size: 0.8rem;"><i class="fa-solid fa-coins"></i> Estimated value of pending work</p>
     </div>
 
 </div>

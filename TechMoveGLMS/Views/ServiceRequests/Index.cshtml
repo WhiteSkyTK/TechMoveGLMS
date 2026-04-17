@@ -1,0 +1,40 @@
+﻿@model IEnumerable<TechMoveGLMS.Models.ServiceRequest>
+@{
+    ViewData["Title"] = "Service Requests";
+}
+
+<div class="dashboard-header" style="margin-bottom: 20px;">
+    <h2>Service Requests</h2>
+    <a asp-action="Create" class="btn-primary">Raise New Request</a>
+</div>
+
+<div class="glass-card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Contract)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>USD Cost</th>
+                <th>ZAR Cost</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Contract.ContractId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>$ @Html.DisplayFor(modelItem => item.OriginalCostUSD)</td>
+                    <td>R @Html.DisplayFor(modelItem => item.ConvertedCostZAR)</td>
+                    <td><span style="font-weight:bold; color: var(--primary-color);">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.RequestId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.RequestId">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
