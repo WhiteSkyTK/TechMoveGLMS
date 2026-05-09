@@ -1,39 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using System.IO;
-
-namespace Tests
+﻿namespace Tests
 {
+    /// <summary>
+    /// Tests the file extension validation logic in isolation.
+    /// These are pure unit tests — no mocks or I/O required.
+    /// </summary>
     public class FileValidationTests
     {
-        [Fact]
-        public void ValidateFileExtension_GivenPdf_ReturnsTrue()
+        // Helper — mirrors the logic in DocumentHandlingService
+        private static bool IsValidPdf(string? fileName)
         {
-            // Arrange
-            string filename = "signed_contract.pdf";
+            if (string.IsNullOrWhiteSpace(fileName)) return false;
+            return Path.GetExtension(fileName).ToLowerInvariant() == ".pdf";
+        }
 
-            // Act
-            bool isValid = Path.GetExtension(filename).ToLower() == ".pdf";
+        // ────────────────────────────────────────────────────────────
+        // VALID EXTENSIONS
+        // ────────────────────────────────────────────────────────────
 
-            // Assert
-            Assert.True(isValid);
+        [Fact]
+        public void ValidateExtension_LowercasePdf_ReturnsTrue()
+        {
+            Assert.True(IsValidPdf("signed_contract.pdf"));
         }
 
         [Fact]
-        public void ValidateFileExtension_GivenExe_ReturnsFalse()
+        public void ValidateExtension_UppercasePdf_ReturnsTrue()
         {
-            // Arrange
-            string filename = "malicious_script.exe";
+            // Extension check is case-insensitive
+            Assert.True(IsValidPdf("SIGNED_CONTRACT.PDF"));
+        }
 
-            // Act
-            bool isValid = Path.GetExtension(filename).ToLower() == ".pdf";
+        [Fact]
+        public void ValidateExtension_MixedCasePdf_ReturnsTrue()
+        {
+            Assert.True(IsValidPdf("Agreement.Pdf"));
+        }
 
-            // Assert
-            Assert.False(isValid);
+        // ────────────────────────────────────────────────────────────
+        // INVALID EXTENSIONS
+        // ────────────────────────────────────────────────────────────
+
+        [Theory]
+        [InlineData("malicious_script.exe")]
+        [InlineData("spreadsheet.xlsx")]
+        [InlineData("document.docx")]
+        [InlineData("image.jpg")]
+        [InlineData("image.png")]
+        [InlineData("archive.zip")]
+        [InlineData("script.sh")]
+        [InlineData("script.bat")]
+        public void ValidateExtension_ForbiddenExtensions_ReturnsFalse(string fileName)
+        {
+            Assert.False(IsValidPdf(fileName));
+        }
+
+        // ────────────────────────────────────────────────────────────
+        // EDGE CASES — null, empty, no extension
+        // ────────────────────────────────────────────────────────────
+
+        [Fact]
+        public void ValidateExtension_NullFilename_ReturnsFalse()
+        {
+            Assert.False(IsValidPdf(null));
+        }
+
+        [Fact]
+        public void ValidateExtension_EmptyString_ReturnsFalse()
+        {
+            Assert.False(IsValidPdf(string.Empty));
+        }
+
+        [Fact]
+        public void ValidateExtension_WhiteSpaceOnly_ReturnsFalse()
+        {
+            Assert.False(IsValidPdf("   "));
+        }
+
+        [Fact]
+        public void ValidateExtension_NoExtension_ReturnsFalse()
+        {
+            Assert.False(IsValidPdf("contractfile"));
+        }
+
+        [Fact]
+        public void ValidateExtension_PdfWordInNameButWrongExtension_ReturnsFalse()
+        {
+            // Attacker names file "contract.pdf.exe" — must still be rejected
+            Assert.False(IsValidPdf("contract.pdf.exe"));
+        }
+
+        [Fact]
+        public void ValidateExtension_DotOnlyExtension_ReturnsFalse()
+        {
+            Assert.False(IsValidPdf("file."));
         }
     }
 }
