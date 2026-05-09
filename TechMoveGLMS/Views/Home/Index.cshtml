@@ -3,27 +3,96 @@
 }
 
 <div class="dashboard-header">
-    <h1 style="margin-bottom: 20px; color: var(--text-main);">Logistics Overview</h1>
+    <div>
+        <h1>Logistics Overview</h1>
+        <p style="color: var(--text-light); font-size:0.9rem; margin-top:4px;">
+            Welcome back, Admin — here is a live snapshot of TechMove operations.
+        </p>
+    </div>
 </div>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+<!-- ===== KPI CARDS ===== -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 32px;">
 
-    <div class="glass-card">
-        <h3 style="color: var(--text-light); font-size: 0.9rem; text-transform: uppercase;">Active Contracts</h3>
-        <p style="font-size: 2.5rem; font-weight: bold; color: var(--primary-color);">@ViewBag.ActiveContracts</p>
-        <p style="color: green; font-size: 0.8rem;"><i class="fa-solid fa-file-contract"></i> Current active agreements</p>
+    <div class="glass-card" style="border-left: 4px solid var(--primary-color);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+                <p style="color:var(--text-light); font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; font-weight:600;">
+                    Active Contracts
+                </p>
+                <p style="font-size:2.8rem; font-weight:800; color:var(--primary-color); line-height:1.1; margin-top:6px;">
+                    @ViewBag.ActiveContracts
+                </p>
+                <p style="color:#6b7280; font-size:0.82rem; margin-top:6px;">
+                    <i class="fa-solid fa-circle-check" style="color:#10b981;"></i>
+                    Current active agreements
+                </p>
+            </div>
+            <div style="background:#dbeafe; border-radius:12px; padding:14px;">
+                <i class="fa-solid fa-file-contract" style="font-size:1.5rem; color:var(--primary-color);"></i>
+            </div>
+        </div>
     </div>
 
-    <div class="glass-card">
-        <h3 style="color: var(--text-light); font-size: 0.9rem; text-transform: uppercase;">Pending Requests</h3>
-        <p style="font-size: 2.5rem; font-weight: bold; color: #f59e0b;">@ViewBag.PendingRequests</p>
-        <p style="color: #6b7280; font-size: 0.8rem;"><i class="fa-solid fa-clock"></i> Awaiting manager approval</p>
+    <div class="glass-card" style="border-left: 4px solid #f59e0b;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+                <p style="color:var(--text-light); font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; font-weight:600;">
+                    Pending Requests
+                </p>
+                <p style="font-size:2.8rem; font-weight:800; color:#f59e0b; line-height:1.1; margin-top:6px;">
+                    @ViewBag.PendingRequests
+                </p>
+                <p style="color:#6b7280; font-size:0.82rem; margin-top:6px;">
+                    <i class="fa-solid fa-clock" style="color:#f59e0b;"></i>
+                    Awaiting manager approval
+                </p>
+            </div>
+            <div style="background:#fef3c7; border-radius:12px; padding:14px;">
+                <i class="fa-solid fa-truck-fast" style="font-size:1.5rem; color:#f59e0b;"></i>
+            </div>
+        </div>
     </div>
 
-    <div class="glass-card">
-        <h3 style="color: var(--text-light); font-size: 0.9rem; text-transform: uppercase;">Pending Value (ZAR)</h3>
-        <p style="font-size: 2.5rem; font-weight: bold; color: #10b981;">R @ViewBag.TotalPendingValue.ToString("N2")</p>
-        <p style="color: #6b7280; font-size: 0.8rem;"><i class="fa-solid fa-coins"></i> Estimated value of pending work</p>
+    <div class="glass-card" style="border-left: 4px solid #10b981;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+                <p style="color:var(--text-light); font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; font-weight:600;">
+                    Pending Value (ZAR)
+                </p>
+                <p style="font-size:2.2rem; font-weight:800; color:#10b981; line-height:1.1; margin-top:6px;">
+                    R @ViewBag.TotalPendingValue.ToString("N2")
+                </p>
+                <p style="color:#6b7280; font-size:0.82rem; margin-top:6px;">
+                    <i class="fa-solid fa-coins" style="color:#10b981;"></i>
+                    Estimated value of pending work
+                </p>
+            </div>
+            <div style="background:#d1fae5; border-radius:12px; padding:14px;">
+                <i class="fa-solid fa-coins" style="font-size:1.5rem; color:#10b981;"></i>
+            </div>
+        </div>
     </div>
 
+</div>
+
+<!-- ===== QUICK ACTIONS ===== -->
+<div class="glass-card">
+    <h3 style="font-size:1rem; font-weight:700; margin-bottom:16px; color:var(--text-main);">
+        Quick Actions
+    </h3>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="/Clients/Create" class="btn-primary">
+            <i class="fa-solid fa-user-plus"></i> Add Client
+        </a>
+        <a href="/Contracts/Create" class="btn-primary">
+            <i class="fa-solid fa-file-circle-plus"></i> Issue Contract
+        </a>
+        <a href="/ServiceRequests/Create" class="btn-primary">
+            <i class="fa-solid fa-plus"></i> Raise Request
+        </a>
+        <a href="/Contracts" class="btn-secondary">
+            <i class="fa-solid fa-magnifying-glass"></i> Browse Contracts
+        </a>
+    </div>
 </div>

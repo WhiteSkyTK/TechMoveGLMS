@@ -3,31 +3,56 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TechMove GLMS</title>
+    <title>@ViewData["Title"] — TechMove GLMS</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
     <div class="app-container">
+
+        <!-- ===== SIDEBAR ===== -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h2><i class="fa-solid fa-ship"></i> TechMove</h2>
-                <button id="close-sidebar" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+                <button id="close-sidebar" class="mobile-toggle">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
             <ul class="nav-links">
-                <li><a href="/" class="active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
-                <li><a href="/Contracts"><i class="fa-solid fa-file-contract"></i> Contracts</a></li>
-                <li><a href="/ServiceRequests"><i class="fa-solid fa-truck-fast"></i> Service Requests</a></li>
-                <li><a href="/Clients"><i class="fa-solid fa-users"></i> Clients</a></li>
+                <li>
+                    <a href="/">
+                        <i class="fa-solid fa-chart-pie"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/Contracts">
+                        <i class="fa-solid fa-file-contract"></i> Contracts
+                    </a>
+                </li>
+                <li>
+                    <a href="/ServiceRequests">
+                        <i class="fa-solid fa-truck-fast"></i> Service Requests
+                    </a>
+                </li>
+                <li>
+                    <a href="/Clients">
+                        <i class="fa-solid fa-users"></i> Clients
+                    </a>
+                </li>
             </ul>
         </nav>
 
+        <!-- ===== MAIN CONTENT ===== -->
         <main class="main-content">
             <header class="top-header">
-                <button id="open-sidebar" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+                <button id="open-sidebar" class="mobile-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 <div class="user-profile">
                     <span>Admin User</span>
-                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
                 </div>
             </header>
 
@@ -35,6 +60,7 @@
                 @RenderBody()
             </div>
         </main>
+
     </div>
 
     <script src="~/js/site.js" asp-append-version="true"></script>

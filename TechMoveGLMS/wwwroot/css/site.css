@@ -8,6 +8,9 @@
     --text-light: #9ca3af;
     --card-bg: #ffffff;
     --transition: all 0.3s ease;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
 }
 
 * {
@@ -33,6 +36,7 @@ body {
     background-color: var(--sidebar-bg);
     color: white;
     transition: var(--transition);
+    flex-shrink: 0;
 }
 
 .sidebar-header {
@@ -40,11 +44,13 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
     .sidebar-header h2 {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         color: white;
+        letter-spacing: 0.5px;
     }
 
 .nav-links {
@@ -60,18 +66,21 @@ body {
         text-decoration: none;
         transition: var(--transition);
         gap: 15px;
+        border-left: 4px solid transparent;
     }
 
-        .nav-links li a:hover, .nav-links li a.active {
-            background-color: var(--primary-color);
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            background-color: rgba(37, 99, 235, 0.2);
             color: white;
-            border-left: 4px solid white;
+            border-left: 4px solid var(--primary-color);
         }
 
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0; /* prevents flex overflow */
 }
 
 .top-header {
@@ -81,31 +90,51 @@ body {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
     font-weight: 600;
+    color: var(--text-main);
 }
 
 .avatar {
     background-color: var(--primary-color);
     color: white;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 0.9rem;
 }
 
 .page-content {
     padding: 2rem;
 }
 
-/* --- 3. Glass Cards & Tables (For your Index pages) --- */
+/* --- 3. Dashboard Header --- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+    .dashboard-header h1,
+    .dashboard-header h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-main);
+    }
+
+/* --- 4. Glass Cards & Tables --- */
 .glass-card {
     background: var(--card-bg);
     border-radius: 12px;
@@ -118,10 +147,11 @@ body {
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
-    .table th, .table td {
+    .table th,
+    .table td {
         padding: 12px 15px;
         text-align: left;
         border-bottom: 1px solid #e5e7eb;
@@ -129,28 +159,82 @@ body {
 
     .table th {
         background-color: #f9fafb;
-        font-weight: bold;
+        font-weight: 700;
         color: #4b5563;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .table tr:hover {
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table tbody tr:hover {
         background-color: #f3f4f6;
     }
 
-/* --- 4. Form Controls & Buttons --- */
+/* --- 5. Status Badges --- */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-active {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.badge-draft {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-expired {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-onhold {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.badge-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.badge-approved {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.badge-rejected {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* --- 6. Form Controls & Buttons --- */
 .form-control {
     width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     margin-top: 5px;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background-color: #fff;
     transition: var(--transition);
 }
 
     .form-control:focus {
         outline: none;
         border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
 .btn-primary {
@@ -160,52 +244,136 @@ body {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 0.95rem;
     transition: var(--transition);
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
     .btn-primary:hover {
         background-color: var(--secondary-color);
         color: white;
+        transform: translateY(-1px);
     }
 
-/* --- Layout Helpers --- */
+.btn-secondary {
+    background-color: #e5e7eb;
+    color: #374151;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+    .btn-secondary:hover {
+        background-color: #d1d5db;
+        color: #111827;
+    }
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+    .btn-danger:hover {
+        background-color: #dc2626;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+/* --- 7. Layout Helpers --- */
 .form-container {
     max-width: 800px;
 }
 
 .form-container-small {
-    max-width: 600px;
+    max-width: 560px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+}
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #374151;
+        margin-bottom: 4px;
+    }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
 }
 
 .hidden {
     display: none !important;
 }
 
-/* --- Currency Calculator --- */
+/* --- 8. Validation --- */
 .validation-summary {
-    color: red;
+    color: var(--danger-color);
     margin-bottom: 15px;
-    font-weight: bold;
+    font-weight: 600;
+    background-color: #fee2e2;
+    border: 1px solid #fca5a5;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
 }
 
+.text-danger {
+    color: var(--danger-color);
+    font-size: 0.8rem;
+    margin-top: 4px;
+    display: block;
+}
+
+/* --- 9. Currency Calculator --- */
 .currency-calculator-box {
     background-color: #f3f4f6;
-    padding: 15px;
+    padding: 18px;
     border-radius: 8px;
     margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
 }
 
 .currency-inputs {
     display: flex;
-    gap: 15px;
-    align-items: center;
+    gap: 20px;
+    align-items: flex-start;
 }
 
 .input-wrapper {
@@ -214,31 +382,155 @@ body {
 
     .input-wrapper label {
         color: #4b5563;
-        font-weight: bold;
+        font-weight: 600;
+        font-size: 0.875rem;
     }
 
 .read-only-input {
-    background-color: #e5e7eb;
+    background-color: #e5e7eb !important;
     cursor: not-allowed;
+    color: #6b7280;
 }
 
 .rate-label {
     font-size: 0.8rem;
     color: var(--primary-color);
     margin-top: 10px;
+    font-weight: 500;
 }
 
-/* --- 5. Pro UI Polish (Icons, File Uploads, Secondary Buttons) --- */
+/* --- 10. File Upload / Drop Zone --- */
+.upload-zone {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 40px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    background-color: #fafafa;
+}
 
-/* Fix the ugly default "Choose File" browser button */
+    .upload-zone:hover,
+    .upload-zone.drag-over {
+        border-color: var(--primary-color);
+        background-color: rgba(37, 99, 235, 0.04);
+    }
+
+    .upload-zone p {
+        color: #6b7280;
+        margin: 6px 0;
+        font-size: 0.95rem;
+    }
+
+    .upload-zone .text-muted {
+        font-size: 0.8rem;
+        color: var(--text-light);
+    }
+
+.icon-large {
+    font-size: 2.8rem;
+    color: var(--text-light);
+    display: block;
+    margin-bottom: 12px;
+}
+
+.hidden-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.file-success-msg {
+    color: var(--success-color);
+    font-weight: 600;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.file-error-msg {
+    color: var(--danger-color);
+    font-weight: 600;
+    margin-top: 8px;
+    font-size: 0.875rem;
+    display: block;
+}
+
+/* --- 11. Detail / Info Layout --- */
+.detail-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    max-width: 700px;
+}
+
+.detail-row {
+    display: flex;
+    padding: 14px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+.detail-label {
+    width: 180px;
+    flex-shrink: 0;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding-top: 2px;
+}
+
+.detail-value {
+    flex: 1;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+/* --- 12. Delete Confirm Card --- */
+.danger-card {
+    background: #fff5f5;
+    border: 1px solid #fca5a5;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+    .danger-card h3 {
+        color: var(--danger-color);
+        margin-bottom: 16px;
+        font-size: 1.1rem;
+    }
+
+/* --- 13. File / Icon Helpers --- */
+.btn-primary i,
+.btn-secondary i,
+.btn-danger i,
+td a i {
+    margin-right: 4px;
+}
+
+/* --- 14. File Input Polish --- */
 input[type="file"].form-control {
-    padding: 5px; /* Adjust padding to fit the button */
+    padding: 5px;
 }
 
 input[type="file"]::file-selector-button {
     background-color: var(--sidebar-bg);
     color: white;
-    padding: 6px 12px;
+    padding: 6px 14px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -251,34 +543,13 @@ input[type="file"]::file-selector-button {
         background-color: var(--primary-color);
     }
 
-/* Secondary Buttons (For "Back to List" and Canceling) */
-.btn-secondary {
-    background-color: #e5e7eb;
-    color: #374151;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* Spaces out the icon and text */
-    transition: var(--transition);
-}
-
-    .btn-secondary:hover {
-        background-color: #d1d5db;
-        color: #111827;
-    }
-
-/* Hamburger Menu / Mobile Toggle Polish */
+/* --- 15. Mobile / Responsive --- */
 .mobile-toggle {
-    display: none; /* Hidden on desktop by default */
+    display: none;
     background: transparent;
     border: none;
     color: var(--text-main);
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     cursor: pointer;
     padding: 8px 12px;
     border-radius: 6px;
@@ -289,16 +560,11 @@ input[type="file"]::file-selector-button {
         background-color: #f3f4f6;
     }
 
-/* Make sure FontAwesome icons in buttons and tables have breathing room */
-.btn-primary i, .btn-secondary i, td a i {
-    margin-right: 5px;
-}
-
 @media (max-width: 768px) {
     .mobile-toggle {
         display: block;
     }
-    /* Show burger on mobile */
+
     .sidebar {
         position: fixed;
         left: -260px;
@@ -308,7 +574,7 @@ input[type="file"]::file-selector-button {
 
         .sidebar.open {
             left: 0;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.15);
         }
 
     #close-sidebar {
@@ -320,4 +586,22 @@ input[type="file"]::file-selector-button {
         #close-sidebar:hover {
             background-color: rgba(255,255,255,0.1);
         }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .currency-inputs {
+        flex-direction: column;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .page-content {
+        padding: 1rem;
+    }
 }

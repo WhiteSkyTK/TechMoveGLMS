@@ -1,59 +1,76 @@
 ﻿@model TechMoveGLMS.Models.Contract
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Contract";
 }
 
-<h1>Edit</h1>
-
-<h4>Contract</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ContractId" />
-            <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
-                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId"></select>
-                <span asp-validation-for="ClientId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Level" class="control-label"></label>
-                <select asp-for="Level" class="form-control"></select>
-                <span asp-validation-for="Level" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SignedAgreementFilePath" class="control-label"></label>
-                <input asp-for="SignedAgreementFilePath" class="form-control" />
-                <span asp-validation-for="SignedAgreementFilePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="dashboard-header">
+    <h2>Edit Contract <span style="color:var(--text-light);">#@Model.ContractId</span></h2>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="glass-card form-container">
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+        <input type="hidden" asp-for="ContractId" />
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="ClientId">Client</label>
+                <select asp-for="ClientId" class="form-control"
+                        asp-items="ViewBag.ClientId">
+                </select>
+                <span asp-validation-for="ClientId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Level">Service Level</label>
+                <select asp-for="Level" class="form-control"
+                        asp-items="Html.GetEnumSelectList<TechMoveGLMS.Models.ServiceLevel>()">
+                </select>
+                <span asp-validation-for="Level" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StartDate">Start Date</label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EndDate">End Date</label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status">Contract Status</label>
+                <select asp-for="Status" class="form-control"
+                        asp-items="Html.GetEnumSelectList<TechMoveGLMS.Models.ContractStatus>()">
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SignedAgreementFilePath">Signed Agreement Path</label>
+                <input asp-for="SignedAgreementFilePath" class="form-control"
+                       placeholder="Path is set automatically on upload" readonly
+                       style="background:#f3f4f6; cursor:not-allowed;" />
+                <small style="color:var(--text-light);">
+                    To update the file, delete this contract and re-create it with the new PDF.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <input type="submit" value="Save Changes" class="btn-primary" />
+            <a asp-action="Index" class="btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Cancel
+            </a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

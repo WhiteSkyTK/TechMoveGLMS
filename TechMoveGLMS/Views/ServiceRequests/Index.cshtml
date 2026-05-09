@@ -3,20 +3,22 @@
     ViewData["Title"] = "Service Requests";
 }
 
-<div class="dashboard-header" style="margin-bottom: 20px;">
+<div class="dashboard-header">
     <h2>Service Requests</h2>
-    <a asp-action="Create" class="btn-primary">Raise New Request</a>
+    <a asp-action="Create" class="btn-primary">
+        <i class="fa-solid fa-plus"></i> Raise New Request
+    </a>
 </div>
 
 <div class="glass-card">
     <table class="table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Contract)</th>
-                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>Contract</th>
+                <th>Description</th>
                 <th>USD Cost</th>
                 <th>ZAR Cost</th>
-                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,17 +26,51 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Contract.ContractId)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                    <td>$ @Html.DisplayFor(modelItem => item.OriginalCostUSD)</td>
-                    <td>R @Html.DisplayFor(modelItem => item.ConvertedCostZAR)</td>
-                    <td><span style="font-weight:bold; color: var(--primary-color);">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                    <td>Contract #@item.Contract?.ContractId</td>
+                    <td>@item.Description</td>
+                    <td style="font-weight:600; color:var(--primary-color);">
+                        $ @item.OriginalCostUSD.ToString("N2")
+                    </td>
+                    <td style="font-weight:600; color:#10b981;">
+                        R @item.ConvertedCostZAR.ToString("N2")
+                    </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.RequestId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.RequestId">Details</a>
+                        @{
+                            var cls = item.Status switch
+                            {
+                                "Approved" => "badge-active",
+                                "Rejected" => "badge-expired",
+                                "In Progress" => "badge-draft",
+                                "Completed" => "badge-active",
+                                _ => "badge-pending"
+                            };
+                        }
+                        <span class="status-badge @cls">@item.Status</span>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.RequestId"
+                           style="color:var(--primary-color); margin-right:10px;">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.RequestId"
+                           style="color:#6b7280; margin-right:10px;">
+                            <i class="fa-solid fa-eye"></i> Details
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.RequestId"
+                           style="color:#ef4444;">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+    @if (!Model.Any())
+    {
+        <div style="text-align:center; padding:50px 0; color:var(--text-light);">
+            <i class="fa-solid fa-inbox" style="font-size:2.5rem; display:block; margin-bottom:12px;"></i>
+            No service requests found. Raise one to get started.
+        </div>
+    }
 </div>

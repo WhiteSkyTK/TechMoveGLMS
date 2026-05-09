@@ -1,56 +1,75 @@
 ﻿@model TechMoveGLMS.Models.ServiceRequest
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Service Request";
 }
 
-<h1>Edit</h1>
-
-<h4>ServiceRequest</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="RequestId" />
-            <div class="form-group">
-                <label asp-for="ContractId" class="control-label"></label>
-                <select asp-for="ContractId" class="form-control" asp-items="ViewBag.ContractId"></select>
-                <span asp-validation-for="ContractId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OriginalCostUSD" class="control-label"></label>
-                <input asp-for="OriginalCostUSD" class="form-control" />
-                <span asp-validation-for="OriginalCostUSD" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConvertedCostZAR" class="control-label"></label>
-                <input asp-for="ConvertedCostZAR" class="form-control" />
-                <span asp-validation-for="ConvertedCostZAR" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="dashboard-header">
+    <h2>Edit Service Request <span style="color:var(--text-light);">#@Model.RequestId</span></h2>
 </div>
 
-<div style="margin-top: 20px;">
-    <a asp-action="Index" class="btn-secondary">
-        <i class="fa-solid fa-arrow-left"></i> Back to List
-    </a>
+<div class="glass-card form-container-small">
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+        <input type="hidden" asp-for="RequestId" />
+
+        <div class="form-group">
+            <label asp-for="ContractId">Contract</label>
+            <select asp-for="ContractId" class="form-control"
+                    asp-items="ViewBag.ContractId">
+            </select>
+            <span asp-validation-for="ContractId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="currency-calculator-box">
+            <div class="currency-inputs">
+                <div class="input-wrapper">
+                    <label asp-for="OriginalCostUSD">Original Cost (USD $)</label>
+                    <input asp-for="OriginalCostUSD" class="form-control"
+                           type="number" step="0.01" min="0" />
+                    <span asp-validation-for="OriginalCostUSD" class="text-danger"></span>
+                </div>
+                <div class="input-wrapper">
+                    <label asp-for="ConvertedCostZAR">Converted Cost (ZAR R)</label>
+                    <input asp-for="ConvertedCostZAR" class="form-control"
+                           type="number" step="0.01" min="0" />
+                    <span asp-validation-for="ConvertedCostZAR" class="text-danger"></span>
+                </div>
+            </div>
+            <p class="rate-label">
+                <i class="fa-solid fa-info-circle"></i>
+                You may adjust the ZAR value manually if needed.
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Status">Request Status</label>
+            <select asp-for="Status" class="form-control">
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="form-actions">
+            <input type="submit" value="Save Changes" class="btn-primary" />
+            <a asp-action="Index" class="btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Cancel
+            </a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

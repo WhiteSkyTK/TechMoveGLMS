@@ -3,7 +3,7 @@
     ViewData["Title"] = "Raise Service Request";
 }
 
-<div class="dashboard-header" style="margin-bottom: 20px;">
+<div class="dashboard-header">
     <h2>Raise Service Request</h2>
 </div>
 
@@ -12,38 +12,49 @@
         <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
 
         <div class="form-group">
-            <label asp-for="ContractId" class="control-label">Contract ID</label>
-            <select asp-for="ContractId" class="form-control" asp-items="ViewBag.ContractId"></select>
+            <label asp-for="ContractId">Contract</label>
+            <select asp-for="ContractId" class="form-control"
+                    asp-items="ViewBag.ContractId" required>
+                <option value="">-- Select Contract --</option>
+            </select>
+            <span asp-validation-for="ContractId" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Description" class="control-label"></label>
-            <input asp-for="Description" class="form-control" required />
+            <label asp-for="Description">Description</label>
+            <input asp-for="Description" class="form-control"
+                   placeholder="Describe the service required..." required />
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
 
+        <!-- Live Currency Calculator -->
         <div class="currency-calculator-box">
             <div class="currency-inputs">
                 <div class="input-wrapper">
                     <label>Cost in USD ($)</label>
-                    <input asp-for="OriginalCostUSD" id="usdInput" class="form-control" type="number" step="0.01" placeholder="Enter USD amount" required />
+                    <input asp-for="OriginalCostUSD" id="usdInput" class="form-control"
+                           type="number" step="0.01" min="0"
+                           placeholder="Enter USD amount" required />
+                    <span asp-validation-for="OriginalCostUSD" class="text-danger"></span>
                 </div>
                 <div class="input-wrapper">
                     <label>Live ZAR Estimate (R)</label>
-                    <input id="zarPreview" class="form-control read-only-input" type="text" readonly placeholder="Calculating..." />
+                    <input id="zarPreview" class="form-control read-only-input"
+                           type="text" readonly placeholder="Fetching rate..." />
                 </div>
             </div>
-            <p id="rateLabel" class="rate-label">Fetching current exchange rate...</p>
+            <p id="rateLabel" class="rate-label">
+                <i class="fa-solid fa-spinner fa-spin"></i> Fetching current exchange rate...
+            </p>
         </div>
 
-        <div class="form-group" style="margin-top: 20px;">
-            <input type="submit" value="Submit Request" class="btn-primary" style="width: 100%;" />
+        <div class="form-actions">
+            <input type="submit" value="Submit Request" class="btn-primary" />
+            <a asp-action="Index" class="btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Cancel
+            </a>
         </div>
     </form>
-</div>
-
-<div>
-    <a asp-action="Index" style="display:inline-block; margin-top:15px;">Back to List</a>
 </div>
 
 @section Scripts {

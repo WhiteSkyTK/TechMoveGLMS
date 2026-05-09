@@ -1,40 +1,51 @@
 ﻿@model TechMoveGLMS.Models.Client
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Client Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Client</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContactEmail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContactEmail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Region)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Region)
-        </dd>
-    </dl>
+<div class="dashboard-header">
+    <h2>Client Details</h2>
+    <a asp-action="Edit" asp-route-id="@Model.ClientId" class="btn-primary">
+        <i class="fa-solid fa-pen-to-square"></i> Edit
+    </a>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ClientId">Edit</a> |
-    <div style="margin-top: 20px;">
-        <a asp-action="Index" class="btn-secondary">
-            <i class="fa-solid fa-arrow-left"></i> Back to List
-        </a>
+
+<div class="detail-card">
+    <div class="detail-row">
+        <span class="detail-label">Client ID</span>
+        <span class="detail-value">#@Model.ClientId</span>
     </div>
+    <div class="detail-row">
+        <span class="detail-label">Company Name</span>
+        <span class="detail-value" style="font-weight:600;">@Model.Name</span>
+    </div>
+    <div class="detail-row">
+        <span class="detail-label">Billing Email</span>
+        <span class="detail-value">
+            <a href="mailto:@Model.ContactEmail" style="color:var(--primary-color);">
+                @Model.ContactEmail
+            </a>
+        </span>
+    </div>
+    <div class="detail-row">
+        <span class="detail-label">Region</span>
+        <span class="detail-value">
+            <span style="background:#e5e7eb; padding:4px 10px; border-radius:4px; font-size:0.85rem;">
+                @Model.Region
+            </span>
+        </span>
+    </div>
+    <div class="detail-row">
+        <span class="detail-label">Contracts</span>
+        <span class="detail-value">@(Model.Contracts?.Count ?? 0) contract(s) on file</span>
+    </div>
+</div>
+
+<div class="form-actions" style="border:none; padding-top:0; margin-top:16px;">
+    <a asp-action="Index" class="btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back to Clients
+    </a>
+    <a asp-action="Delete" asp-route-id="@Model.ClientId" class="btn-danger">
+        <i class="fa-solid fa-trash"></i> Delete
+    </a>
 </div>

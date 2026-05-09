@@ -3,18 +3,20 @@
     ViewData["Title"] = "Clients";
 }
 
-<div class="dashboard-header" style="margin-bottom: 20px;">
+<div class="dashboard-header">
     <h2>Client Directory</h2>
-    <a asp-action="Create" class="btn-primary">Add New Client</a>
+    <a asp-action="Create" class="btn-primary">
+        <i class="fa-solid fa-plus"></i> Add New Client
+    </a>
 </div>
 
 <div class="glass-card">
     <table class="table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.ContactEmail)</th>
-                <th>@Html.DisplayNameFor(model => model.Region)</th>
+                <th>Company Name</th>
+                <th>Billing Email</th>
+                <th>Region</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,15 +24,41 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td style="font-weight: 600;">@Html.DisplayFor(modelItem => item.Name)</td>
-                    <td><a href="mailto:@item.ContactEmail">@Html.DisplayFor(modelItem => item.ContactEmail)</a></td>
-                    <td><span style="background-color: #e5e7eb; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">@Html.DisplayFor(modelItem => item.Region)</span></td>
+                    <td style="font-weight:600;">@item.Name</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.ClientId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ClientId">Details</a>
+                        <a href="mailto:@item.ContactEmail" style="color:var(--primary-color);">
+                            @item.ContactEmail
+                        </a>
+                    </td>
+                    <td>
+                        <span style="background:#e5e7eb; padding:4px 10px; border-radius:4px; font-size:0.8rem;">
+                            @item.Region
+                        </span>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ClientId"
+                           style="color:var(--primary-color); margin-right:10px;">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.ClientId"
+                           style="color:#6b7280; margin-right:10px;">
+                            <i class="fa-solid fa-eye"></i> Details
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.ClientId"
+                           style="color:#ef4444;">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+    @if (!Model.Any())
+    {
+        <div style="text-align:center; padding:50px 0; color:var(--text-light);">
+            <i class="fa-solid fa-users" style="font-size:2.5rem; display:block; margin-bottom:12px;"></i>
+            No clients found. Add one to get started.
+        </div>
+    }
 </div>
