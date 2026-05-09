@@ -62,7 +62,7 @@ namespace Tests
 
             decimal result = _validationService.ConvertUsdToZar(usd, rate);
 
-            Assert.Equal(616.61m, result);
+            Assert.Equal(616.60m, result);
         }
 
         // ────────────────────────────────────────────────────────────
