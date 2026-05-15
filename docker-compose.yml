@@ -1,0 +1,83 @@
+version: "3.9"
+
+# ════════════════════════════════════════════════════════════════
+#  TechMove GLMS — Full Stack
+#  Run: docker compose up --build
+#  API Swagger: http://localhost:8080
+#  Web App:     http://localhost:8081
+# ════════════════════════════════════════════════════════════════
+
+services:
+
+  # ── Container 1: SQL Server ───────────────────────────────────
+  sql-server-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-server-db
+    environment:
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID:   "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - glms-network
+    healthcheck:
+      test: ["CMD-SHELL",
+        "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P YourStrong@Passw0rd -Q 'SELECT 1' -No"]
+      interval: 15s
+      timeout:  10s
+      retries:  10
+      start_period: 45s
+
+  # ── Container 2: Web API Backend ──────────────────────────────
+  glms-backend-api:
+    build:
+      context:    .
+      dockerfile: TechMoveGLMS.API/Dockerfile
+    container_name: glms-backend-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS:        http://+:8080
+      ConnectionStrings__DefaultConnection: >-
+        Server=sql-server-db,1433;Database=TechMoveGLMS_DB;User Id=sa;
+        Password=YourStrong@Passw0rd;TrustServerCertificate=True;
+        MultipleActiveResultSets=true
+      JwtSettings__Secret:        "TechMove-GLMS-JWT-Super-Secret-Key-2026-Min32Chars!"
+      JwtSettings__Issuer:        "TechMoveGLMS.API"
+      JwtSettings__Audience:      "TechMoveGLMS.Web"
+      JwtSettings__ExpiryInHours: "8"
+      AdminCredentials__Username: "admin"
+      AdminCredentials__Password: "Admin@GLMS2026"
+    ports:
+      - "8080:8080"
+    depends_on:
+      sql-server-db:
+        condition: service_healthy
+    networks:
+      - glms-network
+
+  # ── Container 3: MVC Frontend ─────────────────────────────────
+  glms-frontend-web:
+    build:
+      context:    .
+      dockerfile: TechMoveGLMS/Dockerfile
+    container_name: glms-frontend-web
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS:        http://+:8081
+      ApiSettings__BaseUrl:   "http://glms-backend-api:8080/"
+    ports:
+      - "8081:8081"
+    depends_on:
+      - glms-backend-api
+    networks:
+      - glms-network
+
+networks:
+  glms-network:
+    driver: bridge
+
+volumes:
+  sqlserver_data:

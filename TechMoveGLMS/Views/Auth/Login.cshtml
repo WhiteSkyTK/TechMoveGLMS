@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = null; // Standalone page — no sidebar
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechMove GLMS — Login</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        body { display:flex; justify-content:center; align-items:center;
+               min-height:100vh; background:var(--bg-color); }
+        .login-card { background:#fff; border-radius:16px; padding:3rem 2.5rem;
+                      box-shadow:0 8px 30px rgba(0,0,0,0.1); width:100%; max-width:420px; }
+        .login-logo  { text-align:center; margin-bottom:2rem; }
+        .login-logo  i { font-size:3rem; color:var(--primary-color); }
+        .login-logo  h1 { font-size:1.5rem; font-weight:800; margin-top:8px; }
+        .login-logo  p  { color:var(--text-light); font-size:0.875rem; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-logo">
+            <i class="fa-solid fa-ship"></i>
+            <h1>TechMove GLMS</h1>
+            <p>Global Logistics Management System</p>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="validation-summary">
+                @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p>@err.ErrorMessage</p>
+                }
+            </div>
+        }
+
+        <form asp-action="Login" asp-controller="Auth" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+            <div class="form-group">
+                <label style="font-weight:600; font-size:0.875rem;">Username</label>
+                <input name="username" class="form-control" type="text"
+                       placeholder="admin" autocomplete="username" required />
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight:600; font-size:0.875rem;">Password</label>
+                <input name="password" class="form-control" type="password"
+                       placeholder="••••••••" autocomplete="current-password" required />
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">
+                <i class="fa-solid fa-right-to-bracket"></i> Sign In
+            </button>
+        </form>
+    </div>
+</body>
+</html>

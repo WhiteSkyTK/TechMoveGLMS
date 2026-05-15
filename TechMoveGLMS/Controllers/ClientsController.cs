@@ -1,157 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using TechMoveGLMS.Data;
 using TechMoveGLMS.Models;
+using TechMoveGLMS.Services;
 
 namespace TechMoveGLMS.Controllers
 {
+    [Authorize]
     public class ClientsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApiClientService _api;
+        public ClientsController(IApiClientService api) => _api = api;
 
-        public ClientsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        // GET: Clients
         public async Task<IActionResult> Index()
+            => View(await _api.GetClientsAsync());
+
+        public async Task<IActionResult> Details(int id)
         {
-            return View(await _context.Clients.ToListAsync());
+            var client = await _api.GetClientAsync(id);
+            return client == null ? NotFound() : View(client);
         }
 
-        // GET: Clients/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Create() => View();
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Client client)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(m => m.ClientId == id);
-            if (client == null)
-            {
-                return NotFound();
-            }
-
-            return View(client);
-        }
-
-        // GET: Clients/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Clients/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClientId,Name,ContactEmail,Region")] Client client)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(client);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(client);
-        }
-
-        // GET: Clients/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null)
-            {
-                return NotFound();
-            }
-            return View(client);
-        }
-
-        // POST: Clients/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClientId,Name,ContactEmail,Region")] Client client)
-        {
-            if (id != client.ClientId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(client);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClientExists(client.ClientId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(client);
-        }
-
-        // GET: Clients/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(m => m.ClientId == id);
-            if (client == null)
-            {
-                return NotFound();
-            }
-
-            return View(client);
-        }
-
-        // POST: Clients/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var client = await _context.Clients.FindAsync(id);
-            if (client != null)
-            {
-                _context.Clients.Remove(client);
-            }
-
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid) return View(client);
+            var result = await _api.CreateClientAsync(client);
+            if (result == null) { ModelState.AddModelError("", "API error."); return View(client); }
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClientExists(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return _context.Clients.Any(e => e.ClientId == id);
+            var client = await _api.GetClientAsync(id);
+            return client == null ? NotFound() : View(client);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Client client)
+        {
+            if (!ModelState.IsValid) return View(client);
+            var ok = await _api.UpdateClientAsync(id, client);
+            if (!ok) { ModelState.AddModelError("", "Update failed."); return View(client); }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var client = await _api.GetClientAsync(id);
+            return client == null ? NotFound() : View(client);
+        }
+
+        [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _api.DeleteClientAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
