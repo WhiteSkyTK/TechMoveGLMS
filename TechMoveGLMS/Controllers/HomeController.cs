@@ -1,54 +1,51 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using TechMoveGLMS.Data;
 using TechMoveGLMS.Models;
-using System.Threading.Tasks;
-using System.Linq;
+using TechMoveGLMS.Services;
 
 namespace TechMoveGLMS.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApiClientService _api;
 
-        // Inject the Database Context
-        public HomeController(ApplicationDbContext context)
+        public HomeController(IApiClientService api)
         {
-            _context = context;
+            _api = api;
         }
 
         public async Task<IActionResult> Index()
         {
-            // 1. Calculate Active Contracts
-            // We use .CountAsync() to quickly get the number without loading all records into memory
-            ViewBag.ActiveContracts = await _context.Contracts
-                .CountAsync(c => c.Status == TechMoveGLMS.Models.ContractStatus.Active);
+            try
+            {
+                // Use the existing service methods to populate dashboard cards
+                var contracts = await _api.GetContractsAsync();
+                var requests = await _api.GetServiceRequestsAsync();
 
-            // 2. Calculate Pending Service Requests
-            ViewBag.PendingRequests = await _context.ServiceRequests
-                .CountAsync(r => r.Status == "Pending");
-
-            // 3. Calculate Total Value of Pending Requests in ZAR
-            // This shows off your LINQ math skills to the lecturer!
-            var totalValue = await _context.ServiceRequests
-                .Where(r => r.Status == "Pending")
-                .SumAsync(r => r.ConvertedCostZAR);
-
-            ViewBag.TotalPendingValue = totalValue;
+                ViewBag.ActiveContracts = contracts.Count(c => c.Status == ContractStatus.Active);
+                ViewBag.PendingRequests = requests.Count(r => r.Status == "Pending");
+                ViewBag.TotalPendingValue = requests
+                    .Where(r => r.Status == "Pending")
+                    .Sum(r => r.ConvertedCostZAR);
+            }
+            catch
+            {
+                // If API is unreachable, show zeros rather than crash
+                ViewBag.ActiveContracts = 0;
+                ViewBag.PendingRequests = 0;
+                ViewBag.TotalPendingValue = 0m;
+            }
 
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        public IActionResult Privacy() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        public IActionResult Error() =>
+            View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
     }
 }

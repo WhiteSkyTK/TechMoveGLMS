@@ -14,8 +14,7 @@
         <div class="form-grid">
             <div class="form-group">
                 <label asp-for="ClientId">Client</label>
-                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId"
-                        required>
+                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId" required>
                     <option value="">-- Select Client --</option>
                 </select>
                 <span asp-validation-for="ClientId" class="text-danger"></span>

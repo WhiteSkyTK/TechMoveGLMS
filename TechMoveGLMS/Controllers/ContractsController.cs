@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering; // <--- Added for SelectList
 using TechMoveGLMS.Models;
 using TechMoveGLMS.Services;
 
@@ -26,19 +27,22 @@ namespace TechMoveGLMS.Controllers
             return contract == null ? NotFound() : View(contract);
         }
 
+        // GET: Contracts/Create
         public async Task<IActionResult> Create()
         {
-            // Populate client dropdown from API
-            ViewBag.Clients = await _api.GetClientsAsync();
+            // UPDATED: Changed from ViewBag.Clients to ViewBag.ClientId and wrapped in a SelectList
+            ViewBag.ClientId = new SelectList(await _api.GetClientsAsync(), "ClientId", "Name");
             return View();
         }
 
+        // POST: Contracts/Create
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Contract contract, IFormFile? pdfFile)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Clients = await _api.GetClientsAsync();
+                // UPDATED
+                ViewBag.ClientId = new SelectList(await _api.GetClientsAsync(), "ClientId", "Name");
                 return View(contract);
             }
 
@@ -50,26 +54,32 @@ namespace TechMoveGLMS.Controllers
             if (result == null)
             {
                 ModelState.AddModelError("", "Failed to create contract via API.");
-                ViewBag.Clients = await _api.GetClientsAsync();
+                // UPDATED
+                ViewBag.ClientId = new SelectList(await _api.GetClientsAsync(), "ClientId", "Name");
                 return View(contract);
             }
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Contracts/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var contract = await _api.GetContractAsync(id);
             if (contract == null) return NotFound();
-            ViewBag.Clients = await _api.GetClientsAsync();
+
+            // UPDATED
+            ViewBag.ClientId = new SelectList(await _api.GetClientsAsync(), "ClientId", "Name", contract.ClientId);
             return View(contract);
         }
 
+        // POST: Contracts/Edit/5
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Contract contract)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Clients = await _api.GetClientsAsync();
+                // UPDATED
+                ViewBag.ClientId = new SelectList(await _api.GetClientsAsync(), "ClientId", "Name", contract.ClientId);
                 return View(contract);
             }
             await _api.UpdateContractAsync(id, contract);

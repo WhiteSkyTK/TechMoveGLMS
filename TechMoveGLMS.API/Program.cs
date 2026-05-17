@@ -117,10 +117,21 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Auto-apply pending migrations on startup (safe for Docker)
+// Auto-apply pending migrations on startup (safe for Docker & Integration Tests)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+
+    if (db.Database.IsRelational())
+    {
+        // Runs normally on LocalDB / Docker SQL Server
+        db.Database.Migrate();
+    }
+    else
+    {
+        // Runs during your Integration Tests to safely spin up schemas in-memory
+        db.Database.EnsureCreated();
+    }
 }
 
 app.Run();
