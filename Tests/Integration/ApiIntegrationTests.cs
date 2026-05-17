@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost; // <--- NEEDED FOR ConfigureTestServices
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TechMoveGLMS.Data;
@@ -25,7 +26,8 @@ namespace Tests.Integration
             // Override DB with an in-memory database so tests are isolated
             _factory = factory.WithWebHostBuilder(builder =>
             {
-                builder.ConfigureServices(services =>
+                // FIX: Use ConfigureTestServices to completely overwrite registrations safely
+                builder.ConfigureTestServices(services =>
                 {
                     // 1. Remove the real SQL Server registration
                     var descriptor = services.SingleOrDefault(d =>
@@ -37,9 +39,11 @@ namespace Tests.Integration
                         d.ServiceType == typeof(Microsoft.EntityFrameworkCore.Infrastructure.IDbContextOptionsConfiguration<ApplicationDbContext>));
                     if (configDescriptor != null) services.Remove(configDescriptor);
 
-                    // 3. Add in-memory EF Core
+                    // 3. Add in-memory EF Core cleanly
                     services.AddDbContext<ApplicationDbContext>(opts =>
-                        opts.UseInMemoryDatabase("IntegrationTestDb_" + Guid.NewGuid()));
+                    {
+                        opts.UseInMemoryDatabase("IntegrationTestDb_" + Guid.NewGuid());
+                    });
                 });
             });
         }
@@ -153,6 +157,7 @@ namespace Tests.Integration
 
             Assert.Equal(HttpStatusCode.Created, resp.StatusCode);
         }
+
 
         [Fact]
         public async Task GetClient_NonExistentId_Returns404()

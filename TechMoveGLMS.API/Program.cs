@@ -117,20 +117,18 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Auto-apply pending migrations on startup (safe for Docker)
-// Auto-apply pending migrations on startup (safe for Docker & Integration Tests)
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    if (db.Database.IsRelational())
+    // FIX: Only migrate if we are talking to a relational provider (like SQL Server)
+    if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
     {
-        // Runs normally on LocalDB / Docker SQL Server
-        db.Database.Migrate();
+        context.Database.Migrate();
     }
     else
     {
-        // Runs during your Integration Tests to safely spin up schemas in-memory
-        db.Database.EnsureCreated();
+        context.Database.EnsureCreated(); // Ensure schema is generated cleanly for tests
     }
 }
 
