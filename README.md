@@ -298,7 +298,14 @@ TechMoveGLMS.sln
 
 ## 📸 Screenshots
 
-> *(Add your screenshots here after recording)*
+> <img width="1360" height="768" alt="Screenshot 2026-05-17 185102" src="https://github.com/user-attachments/assets/69683420-c833-446a-ac9d-5b945b75ba89" />
+<img width="1360" height="768" alt="Screenshot 2026-05-17 185053" src="https://github.com/user-attachments/assets/e096d71f-eb87-4af4-9b92-808e03c78e5f" />
+<img width="1360" height="768" alt="Screenshot 2026-05-17 185033" src="https://github.com/user-attachments/assets/832fedbe-7c07-4472-870e-2fa212b8df4e" />
+<img width="1360" height="768" alt="Screenshot 2026-05-17 185022" src="https://github.com/user-attachments/assets/31ce38fa-c11c-4a24-88a5-273b8f6c3250" />
+<img width="1360" height="768" alt="Screenshot 2026-05-17 192549" src="https://github.com/user-attachments/assets/9e929424-a370-4485-831b-dd1f9713d51b" />
+<img width="1360" height="768" alt="Screenshot 2026-05-17 190351" src="https://github.com/user-attachments/assets/7757d7f9-2ffb-4f8f-9fd1-5443dc7e8623" />
+<img width="1360" height="768" alt="Screenshot 2026-05-17 185126" src="https://github.com/user-attachments/assets/ba0a0d89-4ce4-4028-9410-ce205ee74492" />
+
 
 | | |
 |---|---|
